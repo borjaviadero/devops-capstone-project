@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: accounts-app-deployment
+  labels:
+    app: accounts-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: accounts-app
+  template:
+    metadata:
+      labels:
+        app: accounts-app
+    spec:
+      containers:
+      - name: accounts-container
+        image: devops-accounts-app:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
