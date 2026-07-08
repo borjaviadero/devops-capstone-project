@@ -1,0 +1,11 @@
+[run]
+source = .
+omit = 
+    */vven/*
+    */virtualenv/*
+    */venv/*
+    .venv/*
+    tests/*
+
+[report]
+show_missing = True
