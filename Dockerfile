@@ -1,17 +1,14 @@
-# 1. Usar una imagen oficial de Python ligera como base
 FROM python:3.10-slim
 
-# 2. Establecer el directorio de trabajo dentro del contenedor
 WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# 3. Copiar las carpetas de código y pruebas al contenedor
-COPY models/ ./models/
-COPY tests/ ./tests/
-COPY .coveragerc ./
+COPY . .
 
-# 4. Instalar las dependencias necesarias de testing
-RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
-    pip install --no-cache-dir green coverage
+# Crear un usuario no-root por seguridad
+RUN useradd -u 1001 appuser && chown -R appuser:appuser /app
+USER appuser
 
-# 5. Comando por defecto que se ejecutará al iniciar el contenedor (pasa los tests)
-CMD ["green", "."]
+EXPOSE 5000
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "service:app"]
