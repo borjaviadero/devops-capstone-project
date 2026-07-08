@@ -22,10 +22,10 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel
-        pip install green coverage
+        pip install flake8 nose coverage
 
-    - name: Run tests with Green
-      run: green .
+    - name: Lint with flake8
+      run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
 
-    - name: Run coverage report
-      run: coverage run -m green .
+    - name: Run unit tests with nosetests
+      run: nosetests
